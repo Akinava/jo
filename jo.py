@@ -29,7 +29,7 @@ not_find = NotFound()
 
 
 class JO:
-    def __init__(self, data):
+    def __init__(self, data=not_find):
         self.__dict__['__data'] = data
 
     def __getattr__(self, attr):
@@ -40,9 +40,11 @@ class JO:
 
     def __setattr__(self, attr, value):
         self.__set_data_by_key(attr, value)
+        self.__callback_parent(attr)
 
     def __setitem__(self, item, value):
         self.__set_data_by_key(item, value)
+        self.__callback_parent()
 
     def __eq__(self, item):
         return self.__dict__['__data'] == item
@@ -54,9 +56,9 @@ class JO:
         return json.dumps(self.__dict__['__data'], indent=2)
 
     def __repr__(self):
-        return json.dumps(self.__dict__['__data'], indent=2)
+        return json.dumps(self.__dict__['__data'])
 
-    def __call__(self, *args, **kwargs):
+    def __call__(self):
         return not_find
 
     def __set_data_by_key(self, key, value):
@@ -69,7 +71,9 @@ class JO:
 
     def __get_data_by_key(self, key):
         if self.__check_data_key(key) is not_find:
-            return not_find
+            obj = JO()
+            obj._set_parent({'item': self, 'key': key})
+            return obj
         data = self.__dict__['__data'][key]
         return JO(data)
 
@@ -94,8 +98,17 @@ class JO:
     def __check_key_in_data(self, key):
         return key in self.__dict__['__data'].keys()
 
+    def __callback_parent(self, attr=''):
+        if attr == '__parent' or not '__parent' in self.__dict__:
+            return
+        parent = self.__dict__['__parent']
+        item = parent['item']
+        key = parent['key']
+        item.__dict__['__data'][key] = self._data
+
+    def _set_parent(self, parent):
+        self.__dict__['__parent'] = parent
+
     @property
     def _data(self):
         return self.__dict__['__data']
-
-
