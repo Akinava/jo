@@ -71,7 +71,7 @@ class JO:
         if self.__check_data_key(key) is not_find:
             return not_find
         data = self.__dict__['__data'][key]
-        return BDATA(data)
+        return JO(data)
 
     def __check_data_key(self, key):
         if self.__check_data_format_is_dict() and self.__check_key_in_data(key) or \
