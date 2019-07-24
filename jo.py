@@ -40,14 +40,14 @@ class JO:
         self.__dict__['__data'] = data
 
     def __getattr__(self, attr):
-        print('getattr', attr)
+        #print('getattr', attr)
         return self.__get_data_by_key(attr)
 
     def __getitem__(self, item):
         return self.__get_data_by_key(item)
 
     def __setattr__(self, attr, value):
-        print('setattr', attr, value)
+        #print('setattr', attr, value)
         self.__set_data_by_key(attr, value)
         self._callback_parent()
 
@@ -69,10 +69,10 @@ class JO:
             return 'NOT_FOUND'
         return json.dumps(self.__dict__['__data'])
 
-    def __call__(self, *args, **kwargs):
-        print('call', args, kwargs)
-        print('call', self.__dict__['__data'])
-        return not_found
+    def __call__(self, arg):
+        #print('call', self.__dict__['__data'], self)
+        self.__dict__['__data'] = arg
+        self._callback_parent()
 
     def __set_data_by_key(self, key, value):
         if not self.__check_data_format_is_dict() and \
@@ -83,13 +83,16 @@ class JO:
         self.__dict__['__data'][key] = value
 
     def __get_data_by_key(self, key):
+        #print('get_data_by_key', key)
         if self.__check_data_key(key) is not_found:
             obj = JO()
             obj._set_parent({'item': self, 'key': key})
-            return obj
-        data = self.__dict__['__data'][key]
-        print('get_data_by_key', data)
-        return JO(data)
+        else:
+            data = self.__dict__['__data'][key]
+            obj = JO(data)
+        obj._set_parent({'item': self, 'key': key})
+        #print('get_data_by_key new obj', obj)
+        return obj
 
     def __check_data_key(self, key):
         if self.__check_data_format_is_dict() and self.__check_key_in_data(key) or \
@@ -118,14 +121,18 @@ class JO:
         parent = self.__dict__['__parent']
         item = parent['item']
         key = parent['key']
-        if item.__dict__['__data'] is not_found:
+        if item.__dict__['__data'] is not_found or \
+           not isinstance(item.__dict__['__data'], dict):
             item.__dict__['__data'] = {}
-
+        #print('parents data', item.__dict__['__data'])
         item.__dict__['__data'][key] = self._data
         item._callback_parent()
 
     def _set_parent(self, parent):
         self.__dict__['__parent'] = parent
+
+    #def _append(self, value):
+    #    print('append', value)
 
     @property
     def _data(self):
