@@ -47,8 +47,8 @@ if __name__ == "__main__":
     #print(obj.a[1] == [1, 2])
     #print(obj.a[1][0] == 1)
     #print(obj.a['b'].c == 1)
-    print(obj.d)
-    #print(obj[d])
+    print(obj.d is jo.not_found)
+    print(obj['d'])
     '''
 
     # append

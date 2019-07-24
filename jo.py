@@ -59,6 +59,8 @@ class JO:
         return self.__dict__['__data'] == item
 
     def __str__(self):
+        if self.__dict__['__data'] is not_found:
+            return 'NOT_FOUND'
         return json.dumps(self.__dict__['__data'], indent=2)
 
     def __unicode__(self):
