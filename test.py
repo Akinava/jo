@@ -41,15 +41,12 @@ if __name__ == "__main__":
     obj['a'][7] = {}       # {'a': {1: [], 7: {}}}
     print(obj == {'a': {1: [], 7: {}, 'b': {'c': 1}}})
 
-    '''
     # get
     obj = jo.JO({'a': {1: [1, 2], 'b': {'c': 1}}})
-    #print(obj.a[1] == [1, 2])
-    #print(obj.a[1][0] == 1)
-    #print(obj.a['b'].c == 1)
-    print(obj.d is jo.not_found)
-    print(obj['d'])
-    '''
+    print(obj.a[1] == [1, 2])
+    print(obj.a[1][0] == 1)
+    print(obj.a['b'].c == 1)
+    print(obj.d == jo.not_found)
 
     # append
     obj = jo.JO({'a': {1: [], 7: {}, 'b': {'c': 1}}})
@@ -60,7 +57,6 @@ if __name__ == "__main__":
     res = obj.b['c']._append(0)
     print(obj == {'a': {1: [], 7: {}, 'b': {'c': 1}}})
     print(res is False)
-    '''
 
 
 
@@ -77,7 +73,7 @@ if __name__ == "__main__":
     obj = jo.JO({'a': 'v', 'b': 2})
     print(obj.a._has_value('v') is True)
     print(obj.a._has_value('a') is False)
-
+    '''
     # change
     obj = jo.JO([1, 5, 3, 4, 5])
     res = obj._change(5, 7)

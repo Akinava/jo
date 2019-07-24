@@ -29,6 +29,7 @@ class NotFound:
         return self
 
     def __eq__(self, inst):
+        #print('not_found eq')
         return self is inst
 
 
@@ -56,7 +57,11 @@ class JO:
         self._callback_parent()
 
     def __eq__(self, item):
+        #print('eq')
         return self.__dict__['__data'] == item
+
+    def __is__(self, item):
+        print('is')
 
     def __str__(self):
         if self.__dict__['__data'] is not_found:
@@ -67,8 +72,9 @@ class JO:
         return json.dumps(self.__dict__['__data'], indent=2)
 
     def __repr__(self):
+        print('repr')
         if self.__dict__['__data'] is not_found:
-            return 'NOT_FOUND'
+            return not_found
         return json.dumps(self.__dict__['__data'])
 
     def __call__(self, arg):
