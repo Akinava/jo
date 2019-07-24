@@ -2,6 +2,13 @@
 import json
 
 
+__author__ = 'Akinava'
+__author_email__ = 'akinava@gmail.com'
+__copyright__ = "Copyright © 2019"
+__license__ = "MIT License"
+__version__ = [0, 0]
+
+
 class NotFound:
     def __str__(self):
         return 'NOT_FIND'
@@ -25,26 +32,28 @@ class NotFound:
         return self is inst
 
 
-not_find = NotFound()
+not_found = NotFound()
 
 
 class JO:
-    def __init__(self, data=not_find):
+    def __init__(self, data=not_found):
         self.__dict__['__data'] = data
 
     def __getattr__(self, attr):
+        print('getattr', attr)
         return self.__get_data_by_key(attr)
 
     def __getitem__(self, item):
         return self.__get_data_by_key(item)
 
     def __setattr__(self, attr, value):
+        print('setattr', attr, value)
         self.__set_data_by_key(attr, value)
-        self.__callback_parent(attr)
+        self._callback_parent()
 
     def __setitem__(self, item, value):
         self.__set_data_by_key(item, value)
-        self.__callback_parent()
+        self._callback_parent()
 
     def __eq__(self, item):
         return self.__dict__['__data'] == item
@@ -56,10 +65,14 @@ class JO:
         return json.dumps(self.__dict__['__data'], indent=2)
 
     def __repr__(self):
+        if self.__dict__['__data'] is not_found:
+            return 'NOT_FOUND'
         return json.dumps(self.__dict__['__data'])
 
-    def __call__(self):
-        return not_find
+    def __call__(self, *args, **kwargs):
+        print('call', args, kwargs)
+        print('call', self.__dict__['__data'])
+        return not_found
 
     def __set_data_by_key(self, key, value):
         if not self.__check_data_format_is_dict() and \
@@ -70,18 +83,19 @@ class JO:
         self.__dict__['__data'][key] = value
 
     def __get_data_by_key(self, key):
-        if self.__check_data_key(key) is not_find:
+        if self.__check_data_key(key) is not_found:
             obj = JO()
             obj._set_parent({'item': self, 'key': key})
             return obj
         data = self.__dict__['__data'][key]
+        print('get_data_by_key', data)
         return JO(data)
 
     def __check_data_key(self, key):
         if self.__check_data_format_is_dict() and self.__check_key_in_data(key) or \
            self.__check_data_format_is_list() and self.__check_key_is_int(key) and self.__check_key_len_for_data(key):
             return
-        return not_find
+        return not_found
 
     def __check_data_format_is_dict(self):
         return isinstance(self.__dict__['__data'], dict)
@@ -98,13 +112,17 @@ class JO:
     def __check_key_in_data(self, key):
         return key in self.__dict__['__data'].keys()
 
-    def __callback_parent(self, attr=''):
-        if attr == '__parent' or not '__parent' in self.__dict__:
+    def _callback_parent(self):
+        if not '__parent' in self.__dict__:
             return
         parent = self.__dict__['__parent']
         item = parent['item']
         key = parent['key']
+        if item.__dict__['__data'] is not_found:
+            item.__dict__['__data'] = {}
+
         item.__dict__['__data'][key] = self._data
+        item._callback_parent()
 
     def _set_parent(self, parent):
         self.__dict__['__parent'] = parent
