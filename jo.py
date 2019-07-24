@@ -131,8 +131,14 @@ class JO:
     def _set_parent(self, parent):
         self.__dict__['__parent'] = parent
 
-    #def _append(self, value):
-    #    print('append', value)
+    def _append(self, value):
+        #print('append', value)
+        #print(self.__dict__['__parent'])
+        if not isinstance(self.__dict__['__data'], list):
+            return False
+        self.__dict__['__data'].append(value)
+        self._callback_parent()
+        return True
 
     @property
     def _data(self):

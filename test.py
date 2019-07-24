@@ -40,18 +40,29 @@ if __name__ == "__main__":
     obj = jo.JO({'a': {1: [], 'b': {'c': 1}}})
     obj['a'][7] = {}       # {'a': {1: [], 7: {}}}
     print(obj == {'a': {1: [], 7: {}, 'b': {'c': 1}}})
+
+    '''
+    # get
+    obj = jo.JO({'a': {1: [1, 2], 'b': {'c': 1}}})
+    #print(obj.a[1] == [1, 2])
+    #print(obj.a[1][0] == 1)
+    #print(obj.a['b'].c == 1)
+    print(obj.d)
+    #print(obj[d])
     '''
 
-    # TODO
+    # append
     obj = jo.JO({'a': {1: [], 7: {}, 'b': {'c': 1}}})
-    obj['a'][1]._append(0)  # {'a': {1: [0], 7: {}}}
-    print(obj)
-    #obj['a'][1][5] = 1     # False
-    #obj['a'][1][5](1)      # False
-    # get
-    #obj['a'].b             # not_find
-    #obj.b.a                # not_find
-    #obj.a[1][1]            # not_find
+    res = obj['a'][1]._append(0)  # {'a': {1: [0], 7: {}}}
+    print(obj == {'a': {1: [0], 7: {}, 'b': {'c': 1}}})
+    print(res is True)
+    obj = jo.JO({'a': {1: [], 7: {}, 'b': {'c': 1}}})
+    res = obj.b['c']._append(0)
+    print(obj == {'a': {1: [], 7: {}, 'b': {'c': 1}}})
+    print(res is False)
+    '''
+
+
 
     '''
     # has
