@@ -8,7 +8,7 @@ python3.x
 
 - usage 
 
-setdata
+set data
 ```python
 >>> import jo
 >>> obj = jo.JO()
