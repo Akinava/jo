@@ -148,6 +148,21 @@ class JO:
         self._callback_parent()
         return True
 
+    def _has(self, value):
+        if isinstance(self.__dict__['__data'], (dict, list)) and value in self.__dict__['__data']:
+            return True
+        if self.__dict__['__data'] == value:
+            return True
+        return False
+
+    def _has_value(self, value):
+        if isinstance(self.__dict__['__data'], (dict)):
+            if value in self.__dict__['__data'].values():
+                return True
+            else:
+                return False
+        return self._has(value)
+
     @property
     def _data(self):
         return self.__dict__['__data']
