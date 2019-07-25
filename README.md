@@ -10,7 +10,7 @@ python3.x
 
 attributes can be got two ways  
 obj.attr_name  
-or
+or  
 obj['attr_name']  
 
 set data
