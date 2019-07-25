@@ -1,6 +1,6 @@
 # JSON to OBJECT
 - intention  
-That code helps to manitulete with a [JSON](https://en.wikipedia.org/wiki/JSON) object as a class.
+That code helps to manipulate with a [JSON](https://en.wikipedia.org/wiki/JSON) object as a class.
 
 - required  
 python3.x
