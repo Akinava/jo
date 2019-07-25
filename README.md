@@ -6,7 +6,12 @@ That code helps to manipulate with a [JSON](https://en.wikipedia.org/wiki/JSON) 
 python3.x
 
 
-- usage 
+- usage  
+
+attributes can be got two ways  
+obj.attr_name  
+or
+obj['attr_name']  
 
 set data
 ```python
