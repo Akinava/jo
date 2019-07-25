@@ -5,7 +5,7 @@ import jo
 
 if __name__ == "__main__":
     # set
-    obj = jo.JO({})
+    obj = jo.JO()
     obj.a.b = 1
     print('test set 1', obj == {'a': {'b': 1}})
     obj.a.b.c = 1
@@ -38,7 +38,7 @@ if __name__ == "__main__":
     print('test set 10', obj == {'a': {1: [], 'b': {'c': 1}}})
 
     obj = jo.JO({'a': {1: [], 'b': {'c': 1}}})
-    obj['a'][7] = {}       # {'a': {1: [], 7: {}}}
+    obj['a'][7] = {}
     print('test set 11', obj == {'a': {1: [], 7: {}, 'b': {'c': 1}}})
 
     # get
@@ -50,7 +50,7 @@ if __name__ == "__main__":
 
     # append
     obj = jo.JO({'a': {1: [], 7: {}, 'b': {'c': 1}}})
-    res = obj['a'][1]._append(0)  # {'a': {1: [0], 7: {}}}
+    res = obj['a'][1]._append(0)
     print('test append 1', obj == {'a': {1: [0], 7: {}, 'b': {'c': 1}}})
     print('test append 2', res is True)
     obj = jo.JO({'a': {1: [], 7: {}, 'b': {'c': 1}}})
@@ -109,6 +109,3 @@ if __name__ == "__main__":
 
     # len
     # type
-
-
-
