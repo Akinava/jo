@@ -84,28 +84,42 @@ if __name__ == "__main__":
     obj = jo.JO(1)
     print('test has value 4', obj._has_value(1) is True)
 
-    '''
+    # len
+    obj = jo.JO([1, 2, 'v'])
+    print('test len 1', obj._len == 3)
+    obj = jo.JO({})
+    print('test len 2', obj._len == 0)
+    obj = jo.JO(1)
+    print('test len 3', obj._len is None)
+    obj = jo.JO('qweqwe')
+    print('test len 4', obj._len is None)
+    obj = jo.JO()
+    print('test len 5', obj._len == jo.not_found)
+
+    # type
+    obj = jo.JO([1, 2, 'v'])
+    print('test type 1', obj._type == list)
+    obj = jo.JO({})
+    print('test type 2', obj._type == dict)
+    obj = jo.JO(1)
+    print('test type 3', obj._type is int)
+    obj = jo.JO('qweqwe')
+    print('test type 4', obj._type is str)
+    obj = jo.JO()
+    print('test type 5', obj._type == jo.not_found)
+
     # replace
     obj = jo.JO([1, 5, 3, 4, 5])
     res = obj._replace(5, 7)
-    print(obj == [1, 7, 3, 4, 7])
-    print(res is True)
+    print('test replace 1', obj == [1, 7, 3, 4, 7])
+    print('test replace 2', res is True)
 
     obj = jo.JO({5: 1, 7: 0})
     res = obj._replace(5, 7)
-    print(obj == {7: 1})
-    print(res is True)
+    print('test replace 3', obj == {7: 1})
+    print('test replace 4', res is True)
 
     obj = jo.JO({5: 1, 7: 0})
     res = obj._replace(5, 9)
-    print(obj == {9: 1, 7: 0})
-    print(res is True)
-
-    obj = jo.JO({5: 1, 7: 0})
-    res = obj._replace_value(1, [1, 2])
-    print(obj == {5: [1, 2], 7: 0})
-    print(res is True)
-    '''
-
-    # len
-    # type
+    print('test replace 5', obj == {9: 1, 7: 0})
+    print('test replace 6', res is True)

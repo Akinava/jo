@@ -29,7 +29,6 @@ class NotFound:
         return self
 
     def __eq__(self, inst):
-        #print('not_found eq')
         return self is inst
 
 
@@ -41,14 +40,12 @@ class JO:
         self.__dict__['__data'] = data
 
     def __getattr__(self, attr):
-        #print('getattr', attr)
         return self.__get_data_by_key(attr)
 
     def __getitem__(self, item):
         return self.__get_data_by_key(item)
 
     def __setattr__(self, attr, value):
-        #print('setattr', attr, value)
         self.__set_data_by_key(attr, value)
         self._callback_parent()
 
@@ -57,11 +54,7 @@ class JO:
         self._callback_parent()
 
     def __eq__(self, item):
-        #print('eq')
         return self.__dict__['__data'] == item
-
-    def __is__(self, item):
-        print('is')
 
     def __str__(self):
         if self.__dict__['__data'] is not_found:
@@ -72,13 +65,11 @@ class JO:
         return json.dumps(self.__dict__['__data'], indent=2)
 
     def __repr__(self):
-        print('repr')
         if self.__dict__['__data'] is not_found:
             return not_found
         return json.dumps(self.__dict__['__data'])
 
     def __call__(self, arg):
-        #print('call', self.__dict__['__data'], self)
         self.__dict__['__data'] = arg
         self._callback_parent()
 
@@ -91,7 +82,6 @@ class JO:
         self.__dict__['__data'][key] = value
 
     def __get_data_by_key(self, key):
-        #print('get_data_by_key', key)
         if self.__check_data_key(key) is not_found:
             obj = JO()
             obj._set_parent({'item': self, 'key': key})
@@ -99,7 +89,6 @@ class JO:
             data = self.__dict__['__data'][key]
             obj = JO(data)
         obj._set_parent({'item': self, 'key': key})
-        #print('get_data_by_key new obj', obj)
         return obj
 
     def __check_data_key(self, key):
@@ -132,7 +121,6 @@ class JO:
         if item.__dict__['__data'] is not_found or \
            not isinstance(item.__dict__['__data'], dict):
             item.__dict__['__data'] = {}
-        #print('parents data', item.__dict__['__data'])
         item.__dict__['__data'][key] = self._data
         item._callback_parent()
 
@@ -140,8 +128,6 @@ class JO:
         self.__dict__['__parent'] = parent
 
     def _append(self, value):
-        #print('append', value)
-        #print(self.__dict__['__parent'])
         if not isinstance(self.__dict__['__data'], list):
             return False
         self.__dict__['__data'].append(value)
@@ -163,6 +149,37 @@ class JO:
                 return False
         return self._has(value)
 
+    def _replace(self, from_, to_):
+        if self.__check_data_format_is_dict() and from_ in self.__dict__['__data']:
+            value = self.__dict__['__data'][from_]
+            del self.__dict__['__data'][from_]
+            self.__dict__['__data'][to_] = value
+            return True
+        if self.__check_data_format_is_list() and from_ in self.__dict__['__data']:
+            while from_ in self.__dict__['__data']:
+                index = self.__dict__['__data'].index(from_)
+                self.__dict__['__data'][index] = to_
+            return True
+        if self.__dict__['__data'] == from_:
+            self.__dict__['__data'] == to_
+            return True
+        return False
+
     @property
     def _data(self):
         return self.__dict__['__data']
+
+    @property
+    def _len(self):
+        if self.__check_data_format_is_dict() or \
+           self.__check_data_format_is_list():
+            return len(self.__dict__['__data'])
+        if self.__dict__['__data'] == not_found:
+            return not_found
+        return None
+
+    @property
+    def _type(self):
+        if self.__dict__['__data'] == not_found:
+            return not_found
+        return type(self.__dict__['__data'])

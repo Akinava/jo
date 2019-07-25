@@ -59,3 +59,28 @@ check dict has value
 >>> obj.a._has_value('v')
 True
 ```
+
+get length
+```python
+>>> import jo
+>>> obj = jo.JO({})
+>>> obj._len
+0
+```
+
+get type
+```python
+>>> import jo
+>>> obj = jo.JO({})
+>>> obj._type
+dict
+```
+
+replace
+```python
+>>> import jo
+>>> obj = jo.JO([1, 5, 3, 4, 5]) 
+>>> res = obj._replace(5, 7)
+>>> res
+[1, 7, 3, 4, 7] 
+```
