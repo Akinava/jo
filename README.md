@@ -56,7 +56,7 @@ check dict has value
 ```python
 >>> import jo
 >>> obj = jo.JO({'a': 'v', 'b': 2})
->>> obj.a._has_value('v')
+>>> obj._has_value('v')
 True
 ```
 
