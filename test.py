@@ -75,8 +75,8 @@ if __name__ == "__main__":
 
     # has value
     obj = jo.JO({'a': 'v', 'b': 2})
-    print('test has value 1', obj.a._has_value('v') is True)
-    print('test has value 2', obj.a._has_value('a') is False)
+    print('test has value 1', obj._has_value('v') is True)
+    print('test has value 2', obj._has_value('a') is False)
 
     obj = jo.JO({'a': [1, 2, 'v']})
     print('test has value 3', obj['a']._has_value('v') is True)
